@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 
 const router = express.Router();
 
-const { createUserToken } = require("../middleware/auth");
+const { createUserToken } = require("../config/auth");
 
 // routes/controllers here
 
@@ -56,10 +56,6 @@ router.post("/login", async (req, res, next)=>
     res.status(401).json({ error: err.message });
   }
 });
-
-
-
-
 
 module.exports = router;
 

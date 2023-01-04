@@ -14,7 +14,8 @@ const morgan = require('morgan')
 // import express
 const express = require("express");
 
-const postController = require('./controllers/post-controller')
+const authController = require("./controllers/auth");
+const homeController = require('./controllers/home-controller')
 
 // Require the user resource routes and controllers
 //const authController = require("./controllers/users"); // or User ????????
@@ -29,14 +30,14 @@ const app = express();
 app.use(cors()) // allows for cross origin request - open channel
 app.use(morgan('dev')) // morgan request logger (for dev)
 app.use(express.json()) // allows us to parse json data
-app.use('/post', postController)
-//app.use('/auth', authController)
+app.use('/', homeController)
+app.use('/auth', authController)
 
 ///////////////////////////////
 // ROUTES
 ////////////////////////////////
 
-app.get('/', (req, res)=>res.redirect('/home'))
+app.get('/', (req, res)=>res.redirect('/'))
 
 // Error handling
 app.get('/error', (req,res)=>{
