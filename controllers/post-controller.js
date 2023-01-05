@@ -19,8 +19,8 @@ router.use((req, res, next) => {
 // this route will catch GET requests to /products/ and respond with all the products
 router.get('/', async (req, res) => { 
 	try {
-			const people = await db.People.find({}).populate('owner', 'username -_id').exec()
-			res.status(200).json(people)
+			const post = await db.Post.find({}).populate('owner', 'username -_id').exec()
+			res.status(200).json(post)
 	} catch (error) {
 			console.error(error)
 			return next(error)
@@ -32,11 +32,11 @@ router.get('/', async (req, res) => {
 // this route will catch GET requests to /products/index/ and respond with a single product
 router.get('/:id', async (req, res, next) => { 
 try {
-	const foundPeople = await db.People.findById(req.params.id)
+	const foundPost = await db.Post.findById(req.params.id)
 	.populate("owner")
 	.exec();
-	console.log(foundPeople)
-	res.status(200).json(foundPeople)
+	console.log(foundPost)
+	res.status(200).json(foundPost)
 } catch (error) {
 	console.error(error)
 	return next(error)
@@ -51,7 +51,7 @@ router.post("/", requireToken, async (req, res, next) => {
 		// passport will verify the the token passed with the request's Authorization headers and set the current user for the request (req.user).
 		const owner = req.user._id
 		req.body.owner = owner
-    const newPerson = await db.People.create(req.body);
+    const newPerson = await db.Post.create(req.body);
     res.status(201).json(newPerson);
   } catch (err) {
     res.status(400).json({
@@ -63,8 +63,8 @@ router.post("/", requireToken, async (req, res, next) => {
 // update route (PUT HTTP VERB)
 router.put("/:id", requireToken, async (req, res) => {
 	try {
-		handleValidateOwnership(req, await db.People.findById(req.params.id))
-		const updatedPerson = await db.People.findByIdAndUpdate(
+		handleValidateOwnership(req, await db.Post.findById(req.params.id))
+		const updatedPerson = await db.Post.findByIdAndUpdate(
 			req.params.id,
 			req.body,
 			{ new: true }
@@ -79,8 +79,8 @@ router.put("/:id", requireToken, async (req, res) => {
 // destroy route (DELETE HTTP VERB)
 router.delete("/:id", requireToken, async (req, res, next) => {
   try {
-    handleValidateOwnership(req, await db.People.findById(req.params.id));
-    const deletedPerson = await db.People.findByIdAndRemove(req.params.id);
+    handleValidateOwnership(req, await db.Post.findById(req.params.id));
+    const deletedPerson = await db.Post.findByIdAndRemove(req.params.id);
     res.status(200).json(deletedPerson);
   } catch (err) {
     res.status(400).json({ error: err.message });
