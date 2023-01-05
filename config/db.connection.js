@@ -16,6 +16,6 @@ mongoose.connect(MONGODB_URI)
 
 // Connection Events
 mongoose.connection
-.on("open", () => console.log(`[${new Date().toLocaleTimeString()}] - MongoDB connected ... 🙌 🙌 🙌`))
-.on("close", () => console.log('MongoDB disconnected  ⚡️ 🔌 ⚡️'))
-.on("error", (error) => console.log('MongoDB connection error 😥', error));
+  .on("open", () => console.log(`[${new Date().toLocaleTimeString()}] - MongoDB connected ... 🙌 🙌 🙌`))
+  .on("close", () => console.log('MongoDB disconnected  ⚡️ 🔌 ⚡️'))
+  .on("error", (error) => console.log('MongoDB connection error 😥', error));
