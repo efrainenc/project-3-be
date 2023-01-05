@@ -9,7 +9,7 @@ const { createUserToken } = require("../config/auth");
 // routes/controllers here
 
 // SIGN UP
-// POST /api/register
+// POST /auth/register
 router.post("/register", async(req, res, next)=>
 {
   // has the password before storing the user info in the database
