@@ -33,7 +33,7 @@ app.use(morgan('dev')) // morgan request logger (for dev)
 app.use(express.json()) // allows us to parse json data
 app.use('/', homeController)
 app.use('/auth', authController)
-app.use('/user', userController)
+app.use('/post', postController)
 
 ///////////////////////////////
 // ROUTES
@@ -62,7 +62,4 @@ app.get('*', (req,res,next)=>{
   }
 })
 
-///////////////////////////////
-// LISTENER
-////////////////////////////////
 app.listen(PORT, () => console.log(`listening on PORT ${PORT}`));

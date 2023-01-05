@@ -1,6 +1,5 @@
-///////////////////////////////
+
 // DEPENDENCIES
-////////////////////////////////
 require('dotenv').config()
 
 // Require the needed npm packages
@@ -16,10 +15,7 @@ const { Strategy, ExtractJwt } = require('passport-jwt')
 // User model import, accessed by JWT verify function
 const User = require('../models/User')
 
-///////////////////////////////
-// CONFIGURATION
-////////////////////////////////
-
+// Config
 // Create a secret to be used to encrypt/decrypt the token
 // This can be any string value you want -- even gibberish.
 
@@ -38,9 +34,7 @@ const opts = {
     secretOrKey: secret
 }
 
-///////////////////////////////
 // AUTHENTICATION FUNCTIONALITY
-////////////////////////////////
 
 const verify = async (jwt_payload, done) => {
 		// In the callback we run our custom code. With the data extracted from

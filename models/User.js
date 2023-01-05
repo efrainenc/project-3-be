@@ -1,29 +1,20 @@
-///////////////////////////////
-// DEPENDENCIES
-////////////////////////////////
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema;
 
-///////////////////////////////
-// MODELS
-////////////////////////////////
-const userSchema = new mongoose.Schema(
-{
-  name: String,
-  email: String,
-  username:{
+const UserSchema = new Schema({
+  username: {
     type: String,
     required: true,
     unique: true,
   },
-  password:{
+  password: {
     type: String,
     required: true,
   },
-  avatar: String,
 },
 {
   timestamps: true,
-  toJSON:{
+  toJSON: {
     virtuals: true,
     // ret is the returned Mongoose document
     transform: (_doc, ret) => {
@@ -31,9 +22,7 @@ const userSchema = new mongoose.Schema(
       return ret;
     },
   },
-}
-);
+})
 
-const User = mongoose.model("User", userSchema);
-
+const User = mongoose.model("User", UserSchema)
 module.exports = User
