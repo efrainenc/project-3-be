@@ -1,6 +1,3 @@
-
-module.exports=
-{
-  Posts: require('./Posts'),
-  User: require('./User'),
+module.exports = {
+  Post: require('./Post')
 }
