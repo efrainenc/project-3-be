@@ -2,7 +2,7 @@
 // DEPENDENCIES
 ////////////////////////////////
 //importing dotenv to init envir var for testing
-// require("dotenv").config()
+require("dotenv").config()
 
 // pull PORT from .env, give default value of 4000
 const mongoose = require('mongoose');
