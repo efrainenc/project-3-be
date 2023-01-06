@@ -14,6 +14,7 @@ router.use((req, res, next) => {
 });
 
 
+
 // index route (GET HTTP VERB)
 // this route will catch GET requests to /products/ and respond with all the products
 router.get('/', async (req, res) => { 
@@ -42,9 +43,9 @@ try {
 }
 });
 
-// create route (Comment HTTP VERB)
+// create route (POST HTTP VERB)
 // send data to create a new product
-router.comment("/", requireToken, async (req, res, next) => {
+router.post("/", requireToken, async (req, res, next) => {
   try {
 
 		// passport will verify the the token passed with the request's Authorization headers and set the current user for the request (req.user).
@@ -85,6 +86,7 @@ router.delete("/:id", requireToken, async (req, res, next) => {
     res.status(400).json({ error: err.message });
   }
 });
+
 
 
 module.exports = router
