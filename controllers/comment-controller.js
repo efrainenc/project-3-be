@@ -44,7 +44,7 @@ try {
 
 // create route (Comment HTTP VERB)
 // send data to create a new product
-router.comment("/", requireToken, async (req, res, next) => {
+router.post("/", requireToken, async (req, res, next) => {
   try {
 
 		// passport will verify the the token passed with the request's Authorization headers and set the current user for the request (req.user).
