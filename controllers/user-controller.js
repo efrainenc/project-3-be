@@ -3,7 +3,7 @@ const express = require('express')
 const router = express.Router()
 
 //import model
-const db = require('../models')
+const {User} = require('../models')
 const { handleValidateOwnership, requireToken } = require("../config/auth");
 
 
@@ -19,37 +19,20 @@ router.use((req, res, next) => {
 // this route will catch GET requests to /products/ and respond with all the products
 router.get('/', async (req, res) => { 
 	try {
-			const post = await db.Post.find({}).populate('owner', 'username -_id').exec()
+			const post = await User.find({}).populate('owner', 'username -_id').exec()
 			res.status(200).json(post)
 	} catch (error) {
 			console.error(error)
 			return next(error)
 	}
 });
-////////////////////////////////////////////
-const aggregate= async(req, res, next)=>{
-	//const id= req.params.id;
-	////////////////// This needs to be placed somewhere idk rn
-	await db.Post.aggregate([{
-		$lookup:{
-			from: "posts",
-			localField: "_id",
-			foreignField: "owner",
-			as: "comments",
-			pipeline: [
-				{$match: {$expr: {$eq: ['$_id', '$$_id']}}}
-			]
-		}
-	}])
-	/////////////////
-}
 
 
 // show route (GET HTTP VERB)
 // this route will catch GET requests to /products/index/ and respond with a single product
 router.get('/:id', async (req, res, next) => { 
 try {
-	const foundPost = await db.Post.findById(req.params.id)
+	const foundPost = await User.findById(req.params.id)
 	.populate("owner")
 	.exec();
 	console.log(foundPost)
@@ -68,7 +51,7 @@ router.post("/", requireToken, async (req, res, next) => {
 		// passport will verify the the token passed with the request's Authorization headers and set the current user for the request (req.user).
 		const owner = req.user._id
 		req.body.owner = owner
-    const newPost = await db.Post.create(req.body);
+    const newPost = await User.create(req.body);
     res.status(201).json(newPost);
   } catch (err) {
     res.status(400).json({
@@ -80,8 +63,8 @@ router.post("/", requireToken, async (req, res, next) => {
 // update route (PUT HTTP VERB)
 router.put("/:id", requireToken, async (req, res) => {
 	try {
-		handleValidateOwnership(req, await db.Post.findById(req.params.id))
-		const updatedPost = await db.Post.findByIdAndUpdate(
+		handleValidateOwnership(req, await User.findById(req.params.id))
+		const updatedPost = await User.findByIdAndUpdate(
 			req.params.id,
 			req.body,
 			{ new: true }
@@ -96,8 +79,8 @@ router.put("/:id", requireToken, async (req, res) => {
 // destroy route (DELETE HTTP VERB)
 router.delete("/:id", requireToken, async (req, res, next) => {
   try {
-    handleValidateOwnership(req, await db.Post.findById(req.params.id));
-    const deletedPost = await db.Post.findByIdAndRemove(req.params.id);
+    handleValidateOwnership(req, await User.findById(req.params.id));
+    const deletedPost = await User.findByIdAndRemove(req.params.id);
     res.status(200).json(deletedPost);
   } catch (err) {
     res.status(400).json({ error: err.message });
