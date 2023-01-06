@@ -12,16 +12,19 @@ router.post("/register", async (req, res, next) => {
   //   has the password before storing the user info in the database
   try {
 
+    // salt is a random seed to make our pw unique 
     const salt = await bcrypt.genSalt(10);
+    // hash password from req.body
     const passwordHash = await bcrypt.hash(req.body.password, salt);
 
-    const pwStore = req.body.password;
     // we store this temporarily so the origin plain text password can be parsed by the createUserToken();
+    const pwStore = req.body.password;
 
-    req.body.password = passwordHash;
     // modify req.body (for storing hash in db)
+    req.body.password = passwordHash;
 
     const newUser = await User.create(req.body);
+
     if (newUser) {
       req.body.password = pwStore;
       const authenticatedUserToken = createUserToken(req, newUser);
