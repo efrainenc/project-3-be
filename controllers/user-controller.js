@@ -3,7 +3,7 @@ const express = require('express')
 const router = express.Router()
 
 //import model
-const {User} = require('../models')
+const db = require('../models')
 const { handleValidateOwnership, requireToken } = require("../config/auth");
 
 
@@ -19,7 +19,7 @@ router.use((req, res, next) => {
 // this route will catch GET requests to /products/ and respond with all the products
 router.get('/', async (req, res) => { 
 	try {
-			const post = await User.find({}).populate('owner', 'username -_id').exec()
+			const post = await db.User.find({}).populate('owner', 'username -_id').exec()
 			res.status(200).json(post)
 	} catch (error) {
 			console.error(error)
@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
 // this route will catch GET requests to /products/index/ and respond with a single product
 router.get('/:id', async (req, res, next) => { 
 try {
-	const foundPost = await User.findById(req.params.id)
+	const foundPost = await db.User.findById(req.params.id)
 	.populate("owner")
 	.exec();
 	console.log(foundPost)
@@ -51,7 +51,7 @@ router.post("/", requireToken, async (req, res, next) => {
 		// passport will verify the the token passed with the request's Authorization headers and set the current user for the request (req.user).
 		const owner = req.user._id
 		req.body.owner = owner
-    const newPost = await User.create(req.body);
+    const newPost = await db.User.create(req.body);
     res.status(201).json(newPost);
   } catch (err) {
     res.status(400).json({
@@ -64,7 +64,7 @@ router.post("/", requireToken, async (req, res, next) => {
 router.put("/:id", requireToken, async (req, res) => {
 	try {
 		handleValidateOwnership(req, await User.findById(req.params.id))
-		const updatedPost = await User.findByIdAndUpdate(
+		const updatedPost = await db.User.findByIdAndUpdate(
 			req.params.id,
 			req.body,
 			{ new: true }
@@ -80,23 +80,8 @@ router.put("/:id", requireToken, async (req, res) => {
 router.delete("/:id", requireToken, async (req, res, next) => {
   try {
     handleValidateOwnership(req, await User.findById(req.params.id));
-    const deletedPost = await User.findByIdAndRemove(req.params.id);
+    const deletedPost = await db.User.findByIdAndRemove(req.params.id);
     res.status(200).json(deletedPost);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
-
-// SIGN OUT
-router.get( "/logout", requireToken, async (req, res, next) => {
-  try {
-    const currentUser = req.user.username
-		delete req.user
-    res.status(200).json({
-      message: `${currentUser} currently logged out`,
-      isLoggedIn: false,
-      token: "",
-    });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
