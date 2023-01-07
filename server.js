@@ -17,7 +17,11 @@ const express = require("express");
 const authController = require("./controllers/auth");
 const postController = require('./controllers/post-controller')
 const commentController = require('./controllers/comment-controller')
+<<<<<<< HEAD
 // const userController = require('./controllers/user-controller')
+=======
+const aggregateController = require('./controllers/aggregate-controller')
+>>>>>>> 397c370cbcf20569f9edf237ab741d17d05899aa
 
 // Require the user resource routes and controllers
 //const authController = require("./controllers/users"); // or User ????????
@@ -35,7 +39,11 @@ app.use(express.json()) // allows us to parse json data
 app.use('/auth', authController)
 app.use('/post', postController)
 app.use('/comment', commentController)
+<<<<<<< HEAD
 // app.use('/user', userController)
+=======
+app.use('/aggregate', aggregateController)
+>>>>>>> 397c370cbcf20569f9edf237ab741d17d05899aa
 
 ///////////////////////////////
 // ROUTES
