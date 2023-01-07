@@ -13,13 +13,11 @@ router.use((req, res, next) => {
 	next();
 });
 
-
-
 // index route (GET HTTP VERB)
 // this route will catch GET requests to /products/ and respond with all the products
 router.get('/', async (req, res) => { 
 	try {
-			const post = await db.User.find({}).populate('owner', 'username -_id').exec()
+			const post = await db.User.find({}).populate().exec()
 			res.status(200).json(post)
 	} catch (error) {
 			console.error(error)
@@ -33,7 +31,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res, next) => { 
 try {
 	const foundPost = await db.User.findById(req.params.id)
-	.populate("owner")
+	.populate()
 	.exec();
 	console.log(foundPost)
 	res.status(200).json(foundPost)
@@ -49,8 +47,8 @@ try {
 router.post("/", requireToken, async (req, res, next) => {
   try {
 		// passport will verify the the token passed with the request's Authorization headers and set the current user for the request (req.user).
-		const owner = req.user._id
-		req.body.owner = owner
+		// const owner = req.user._id
+		// req.body.owner = owner
     const newPost = await db.User.create(req.body);
     res.status(201).json(newPost);
   } catch (err) {
@@ -63,7 +61,7 @@ router.post("/", requireToken, async (req, res, next) => {
 // update route (PUT HTTP VERB)
 router.put("/:id", requireToken, async (req, res) => {
 	try {
-		handleValidateOwnership(req, await User.findById(req.params.id))
+		handleValidateOwnership(req, await db.User.findById(req.params.id))
 		const updatedPost = await db.User.findByIdAndUpdate(
 			req.params.id,
 			req.body,
@@ -79,7 +77,7 @@ router.put("/:id", requireToken, async (req, res) => {
 // destroy route (DELETE HTTP VERB)
 router.delete("/:id", requireToken, async (req, res, next) => {
   try {
-    handleValidateOwnership(req, await User.findById(req.params.id));
+    handleValidateOwnership(req, await db.User.findById(req.params.id));
     const deletedPost = await db.User.findByIdAndRemove(req.params.id);
     res.status(200).json(deletedPost);
   } catch (err) {
