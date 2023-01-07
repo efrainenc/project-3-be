@@ -11,28 +11,28 @@ router.use((req, res, next) => {
 });
 
 
-
+// index route (GET HTTP VERB)
 router.get('/', async (req, res, next) => {
   try {
 
     const aggregateResult = await db.Post.aggregate([
-      {
-        $lookup:
-       {
+      {$lookup:{
                  from: "comments",
                  localField: "_id",
                  foreignField: "post_id",
                  as: "post_comments"
-       }
-     }
+       }  }
     ])
-    
-    res.send(aggregateResult);
-    res.status(200).json(post)
+    // need to use a .then because aggregate returns a promise instead of a function
+    res.status(200).json(aggregateResult)
   } catch (error) {
     
     return next(error)
   }
 });
 
+
 module.exports = router;
+
+
+
