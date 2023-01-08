@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
 
 // show route (GET HTTP VERB)
 // this route will catch GET requests to /products/index/ and respond with a single product
-router.get('/:id', async (req, res, next) => { 
+router.get('/:id', async (req, res, next) => { // might have removed a requiredToken late night note
 try {
 	const foundPost = await db.User.findById(req.params.id)
 	.populate()
@@ -43,6 +43,7 @@ try {
 // update route (PUT HTTP VERB)
 router.put("/:id", requireToken, async (req, res) => {
 	try {
+		console.log(req.params)
 		handleValidateOwnership(req, await db.User.findById(req.params.id))
 		const updatedUser = await db.User.findByIdAndUpdate(
 			req.params.id,

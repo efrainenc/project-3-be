@@ -10,14 +10,11 @@ const UserSchema = new Schema({
   password: {
     type: String,
     required: true,
-  },
-  userImage: {
-    type: String,
   }
 },
 {
   timestamps: true,
-  id: false,
+  id: false, // FALSE HERE
   toJSON: {
     virtuals: true,
     // ret is the returned Mongoose document
