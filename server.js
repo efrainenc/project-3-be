@@ -18,7 +18,7 @@ const authController = require("./controllers/auth");
 const postController = require('./controllers/post-controller')
 const commentController = require('./controllers/comment-controller')
 const aggregateController = require('./controllers/aggregate-controller')
-const userController = require('./controllers/user-controller')
+const profileController = require('./controllers/profile-controller')
 
 // Require the user resource routes and controllers
 //const authController = require("./controllers/users"); // or User ????????
@@ -37,7 +37,7 @@ app.use('/auth', authController)
 app.use('/post', postController)
 app.use('/comment', commentController)
 app.use('/aggregate', aggregateController)
-app.use('/user', userController)
+app.use('/profile', profileController)
 
 ///////////////////////////////
 // ROUTES
