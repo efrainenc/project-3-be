@@ -44,9 +44,8 @@ try {
 });
 
 // create route (Post HTTP VERB)
-// TODO add requiredToken back to create profile route
 // send data to create a new product
-router.post("/", async (req, res, next) => {
+router.post("/", requireToken, async (req, res, next) => {
   try {
 
 		// passport will verify the the token passed with the request's Authorization headers and set the current user for the request (req.user).
