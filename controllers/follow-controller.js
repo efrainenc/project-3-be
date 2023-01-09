@@ -16,11 +16,11 @@ router.use((req, res, next) => {
 
 
 // index route (GET HTTP VERB)
-// this route will catch GET requests to /products/ and respond with all the products
+// this route will catch GET requests to /follow/ and respond with all the followers
 router.get('/', async (req, res) => { 
 	try {
-			const comment = await db.Comment.find({}).populate('post_id owner', '-_id').exec()
-			res.status(200).json(comment)
+			const follow = await db.Follow.find({}).populate('following owner', '-_id').exec()
+			res.status(200).json(follow)
 	} catch (error) {
 			console.error(error)
 			return next(error)
@@ -32,11 +32,11 @@ router.get('/', async (req, res) => {
 // this route will catch GET requests to /products/index/ and respond with a single product
 router.get('/:id', async (req, res, next) => { 
 try {
-	const foundComment = await db.Comment.findById(req.params.id)
+	const foundFollow = await db.Follow.findById(req.params.id)
 	.populate('post_id owner', '-_id')
 	.exec();
-	console.log(foundComment)
-	res.status(200).json(foundComment)
+	console.log(foundFollow)
+	res.status(200).json(foundFollow)
 } catch (error) {
 	console.error(error)
 	return next(error)
@@ -51,8 +51,8 @@ router.post("/", requireToken, async (req, res, next) => {
 		// passport will verify the the token passed with the request's Authorization headers and set the current user for the request (req.user).
 		const owner = req.user._id
 		req.body.owner = owner
-    const newComment = await db.Comment.create(req.body);
-    res.status(201).json(newComment);
+    const newFollow = await db.Follow.create(req.body);
+    res.status(201).json(newFollow);
   } catch (err) {
     res.status(400).json({
       error: err.message,
@@ -63,13 +63,13 @@ router.post("/", requireToken, async (req, res, next) => {
 // update route (PUT HTTP VERB)
 router.put("/:id", requireToken, async (req, res) => {
 	try {
-		handleValidateOwnership(req, await db.Comment.findById(req.params.id))
-		const updatedComment = await db.Comment.findByIdAndUpdate(
+		handleValidateOwnership(req, await db.Follow.findById(req.params.id))
+		const updatedFollow = await db.Follow.findByIdAndUpdate(
 			req.params.id,
 			req.body,
 			{ new: true }
 		)
-		res.status(200).json(updatedComment)
+		res.status(200).json(updatedFollow)
 	} catch (error) {
 		//send error
 		res.status(400).json({error: error.message})
@@ -79,9 +79,9 @@ router.put("/:id", requireToken, async (req, res) => {
 // destroy route (DELETE HTTP VERB)
 router.delete("/:id", requireToken, async (req, res, next) => {
   try {
-    handleValidateOwnership(req, await db.Comment.findById(req.params.id));
-    const deletedComment = await db.Comment.findByIdAndRemove(req.params.id);
-    res.status(200).json(deletedComment);
+    handleValidateOwnership(req, await db.Follow.findById(req.params.id));
+    const deletedFollow = await db.Follow.findByIdAndRemove(req.params.id);
+    res.status(200).json(deletedFollow);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

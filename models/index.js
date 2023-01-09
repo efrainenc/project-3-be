@@ -3,4 +3,5 @@ module.exports = {
   User: require('./User'),
   Comment: require('./Comment'),
   Profile: require('./Profile'),
+  Follow: require('./Follow'),
 }
