@@ -1,12 +1,16 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
-const FollowSchema = new Schema({
-  following: {
+const FollowSchema = new Schema(
+{
+  following: 
+  {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', 
-    required: [true]},
-  owner: {
+    required: [true]
+  },
+  owner: 
+  {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
