@@ -43,7 +43,7 @@ app.use('/profile', profileController)
 // ROUTES
 ////////////////////////////////
 
-app.get('/', (req, res)=>res.redirect('/'))
+app.get('/', (req, res)=>res.redirect('/aggregate'))
 
 // Error handling
 app.get('/error', (req,res)=>{
