@@ -19,7 +19,7 @@ router.use((req, res, next) => {
 // this route will catch GET requests to /products/ and respond with all the products
 router.get('/', async (req, res) => { 
 	try {
-			const comment = await db.Comment.find({}).populate('post_id owner', '-_id').exec()
+			const comment = await db.Comment.find({}).populate('post_id').populate('owner', '-_id').exec()
 			res.status(200).json(comment)
 	} catch (error) {
 			console.error(error)
@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res, next) => { 
 try {
 	const foundComment = await db.Comment.findById(req.params.id)
-	.populate('post_id owner', '-_id')
+	.populate('post_id').populate('owner', '-_id')
 	.exec();
 	console.log(foundComment)
 	res.status(200).json(foundComment)
