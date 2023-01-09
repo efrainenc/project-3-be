@@ -19,7 +19,7 @@ router.use((req, res, next) => {
 // this route will catch GET requests to /follow/ and respond with all the followers
 router.get('/', async (req, res) => { 
 	try {
-			const follow = await db.Follow.find({}).populate('post_id owner').exec()
+			const follow = await db.Follow.find({}).populate('following owner', '-_id').exec()
 			res.status(200).json(follow)
 	} catch (error) {
 			console.error(error)
@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res, next) => { 
 try {
 	const foundFollow = await db.Follow.findById(req.params.id)
-	.populate('post_id owner')
+	.populate('post_id owner', '-_id')
 	.exec();
 	console.log(foundFollow)
 	res.status(200).json(foundFollow)
