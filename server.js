@@ -1,19 +1,21 @@
+
 ///////////////////////////////
 // DEPENDENCIES
 ////////////////////////////////
 
-// initialize dotenv
+// Initialize dotenv
 require("dotenv").config();
+
+// Import configuration to mongoDB using mongoose
 require("./config/db.connection");
 
-// pull PORT from .env, give default value of 4000 and establish DB Connection
+// Pull PORT from .env, Cors and morgan dependencies , Import express
 const { PORT } = process.env;
 const cors = require('cors')
 const morgan = require('morgan')
-
-// import express
 const express = require("express");
 
+// Import controllers and set them as variables
 const authController = require("./controllers/auth");
 const postController = require('./controllers/post-controller')
 const commentController = require('./controllers/comment-controller')
@@ -21,15 +23,19 @@ const aggregateController = require('./controllers/aggregate-controller')
 const profileController = require('./controllers/profile-controller')
 const followController = require('./controllers/follow-controller')
 
-// create application object
+// Create application object as express
 const app = express();
 
 ///////////////////////////////
 // MIDDLEWARE
 ////////////////////////////////
-app.use(cors()) // allows for cross origin request - open channel
-app.use(morgan('dev')) // morgan request logger (for dev)
-app.use(express.json()) // allows us to parse json data
+
+// For cross origin request - open channel , morgan request logger (for dev), and parse json data
+app.use(cors()) 
+app.use(morgan('dev'))
+app.use(express.json()) 
+
+// Controller middleware
 app.use('/auth', authController)
 app.use('/post', postController)
 app.use('/comment', commentController)
@@ -41,27 +47,34 @@ app.use('/follow', followController)
 // ROUTES
 ////////////////////////////////
 
+// Reroute to /aggregate/ from /
 app.get('/', (req, res)=>res.redirect('/aggregate'))
 
-// Error handling
-app.get('/error', (req,res)=>{
+// Error handling / 404
+app.get('/error', (req,res)=>
+{
   res.status(500).send('something went wrong...')
 })
 
-app.use((error, req,res,next)=>{
-  if(error){
-      return res.status(404).send(error.message)
+app.use((error, req,res,next)=>
+{
+  if(error)
+  {
+    return res.status(404).send(error.message)
   }
   next()
 })
 
-// wild card
-app.get('*', (req,res,next)=>{
-  if(req.error){
-      res.status(404).send(`Error: ${req.error.message}`)
-  }else {
-      res.redirect('/error/')
+app.get('*', (req,res,next)=>
+{
+  if(req.error)
+  {
+    res.status(404).send(`Error: ${req.error.message}`)
+  }else 
+  {
+    res.redirect('/error/')
   }
 })
 
+// Connection to port
 app.listen(PORT, () => console.log(`listening on PORT ${PORT}`));

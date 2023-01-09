@@ -1,6 +1,8 @@
+
 ///////////////////////////////
 // DEPENDENCIES
 ////////////////////////////////
+
 //importing dotenv to init envir var for testing
 require("dotenv").config()
 
@@ -11,6 +13,7 @@ const {MONGODB_URI} = process.env
 ///////////////////////////////
 // DATABASE CONNECTION
 ////////////////////////////////
+
 mongoose.set('strictQuery', true);
 mongoose.connect(MONGODB_URI)
 
