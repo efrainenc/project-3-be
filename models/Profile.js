@@ -6,7 +6,6 @@ const ProfileSchema = new Schema({
   imageProfile: String,
   headerImageProfile: String,
   bioProfile: String,
-  following: [String], // 
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
