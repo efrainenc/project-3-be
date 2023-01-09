@@ -41,9 +41,6 @@ router.post("/register", async (req, res, next) => {
   }
 });
 
-
-
-
 // SIGN IN
 // POST /auth/login
 router.post("/login", async (req, res, next) => {

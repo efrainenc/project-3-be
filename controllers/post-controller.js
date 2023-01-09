@@ -26,6 +26,23 @@ router.get('/', async (req, res) => {
 			return next(error)
 	}
 });
+////////////////////////////////////////////
+const aggregate= async(req, res, next)=>{
+	//const id= req.params.id;
+	////////////////// This needs to be placed somewhere idk rn
+	await db.Post.aggregate([{
+		$lookup:{
+			from: "posts",
+			localField: "_id",
+			foreignField: "owner",
+			as: "comments",
+			pipeline: [
+				{$match: {$expr: {$eq: ['$_id', '$$_id']}}}
+			]
+		}
+	}])
+	/////////////////
+}
 
 
 // show route (GET HTTP VERB)
@@ -45,9 +62,9 @@ try {
 
 // create route (POST HTTP VERB)
 // send data to create a new product
+// COMMENT 
 router.post("/", requireToken, async (req, res, next) => {
   try {
-
 		// passport will verify the the token passed with the request's Authorization headers and set the current user for the request (req.user).
 		const owner = req.user._id
 		req.body.owner = owner
