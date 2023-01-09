@@ -22,7 +22,7 @@ router.get('/', async (req, res) =>
 	try 
 	{
 		const post = await db.Post.find({})
-		.populate('owner', 'username -_id')
+		.populate('owner')
 		.exec()
 		res.status(200).json(post)
 	} catch (error) 
