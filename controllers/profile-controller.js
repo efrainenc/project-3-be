@@ -22,7 +22,7 @@ router.get('/', async (req, res) =>
 	try 
 	{
 		const profile = await db.Profile.find({})
-		.populate('owner', 'username -_id')
+		.populate('owner')
 		.exec()
 		res.status(200).json(profile)
 	} catch (error) 
@@ -38,7 +38,7 @@ router.get('/:id', async (req, res, next) =>
 	try 
 	{
 		const foundProfile = await db.Profile.findById(req.params.id)
-		.populate("owner")
+		.populate('owner')
 		.exec();
 		res.status(200).json(foundProfile)
 	} catch (error) 
