@@ -14,7 +14,7 @@ const UserSchema = new Schema({
 },
 {
   timestamps: true,
-  id: false,
+  id: false, // FALSE HERE
   toJSON: {
     virtuals: true,
     // ret is the returned Mongoose document

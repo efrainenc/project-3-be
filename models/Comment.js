@@ -8,11 +8,11 @@ const CommentSchema = new Schema({
     ref: 'Post',
     required: true
   },
-      owner: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-      }
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
 }, {timestamps: true})
 
 const Comment = mongoose.model("Comment", CommentSchema)
