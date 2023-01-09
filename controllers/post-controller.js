@@ -22,7 +22,7 @@ router.get('/', async (req, res) =>
 	try 
 	{
 		const post = await db.Post.find({})
-		.populate('owner')
+		.populate('owner', 'username -_id')
 		.exec()
 		res.status(200).json(post)
 	} catch (error) 
@@ -38,7 +38,7 @@ router.get('/:id', async (req, res, next) =>
 	try 
 	{
 		const foundPost = await db.Post.findById(req.params.id)
-		.populate("owner")
+		.populate('owner', 'username -_id')
 		.exec();
 		res.status(200).json(foundPost)
 	} catch (error) 
