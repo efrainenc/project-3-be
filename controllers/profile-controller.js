@@ -1,68 +1,75 @@
-
+// Imports
 const express = require('express')
 const router = express.Router()
 
-//import model
+// Import models through models/index.js
 const db = require('../models')
+
+// Import token validation and requireToken for Auth
 const { handleValidateOwnership, requireToken } = require("../config/auth");
 
-
-// middleware to print out the HTTP method and the URL path for every request to our terminal
-router.use((req, res, next) => {    
+// Middleware to print out the HTTP method and the URL path for every request to our terminal
+router.use((req, res, next) => 
+{    
 	console.log(`${req.method} ${req.originalUrl}`);    
 	next();
 });
 
-
-
-// index route (GET HTTP VERB)
-// this route will catch GET requests to /products/ and respond with all the products
-router.get('/', async (req, res) => { 
-	try {
-			const profile = await db.Profile.find({}).populate('owner', 'username -_id').exec()
-			res.status(200).json(profile)
-	} catch (error) {
-			console.error(error)
-			return next(error)
+// Index route (GET HTTP VERB)
+// This route will catch GET requests to /follow/ and respond with all the user profiles
+router.get('/', async (req, res) => 
+{ 
+	try 
+	{
+		const profile = await db.Profile.find({})
+		.populate('owner', 'username -_id')
+		.exec()
+		res.status(200).json(profile)
+	} catch (error) 
+	{
+		return next(error)
 	}
 });
 
-
-// show route (GET HTTP VERB)
-// this route will catch GET requests to /products/index/ and respond with a single product
-router.get('/:id', async (req, res, next) => { 
-try {
-	const foundProfile = await db.Profile.findById(req.params.id)
-	.populate("owner")
-	.exec();
-	console.log(foundProfile)
-	res.status(200).json(foundProfile)
-} catch (error) {
-	console.error(error)
-	return next(error)
-}
+// Show route (GET HTTP VERB)
+// This route will catch GET requests to /follow/index/ and respond with a single user profile
+router.get('/:id', async (req, res, next) => 
+{ 
+	try 
+	{
+		const foundProfile = await db.Profile.findById(req.params.id)
+		.populate("owner")
+		.exec();
+		res.status(200).json(foundProfile)
+	} catch (error) 
+	{
+		return next(error)
+	}
 });
 
-// create route (Post HTTP VERB)
-// send data to create a new product
-router.post("/", requireToken, async (req, res, next) => {
-  try {
-
-		// passport will verify the the token passed with the request's Authorization headers and set the current user for the request (req.user).
+// Create route (POST HTTP VERB)
+// Send data to create a new user profile
+// Passport will verify the the token passed with the request's Authorization headers and set the current user for the request (req.user).
+router.post("/", requireToken, async (req, res, next) => 
+{
+  try 
+	{
 		const owner = req.user._id
 		req.body.owner = owner
     const newProfile = await db.Profile.create(req.body);
     res.status(201).json(newProfile);
-  } catch (err) {
-    res.status(400).json({
-      error: err.message,
-    });
+  } catch (err) 
+	{
+    res.status(400).json({error: err.message,});
   }
 });
 
-// update route (PUT HTTP VERB)
-router.put("/:id", requireToken, async (req, res) => {
-	try {
+// Update route (PUT HTTP VERB)
+// Send data to update user profile
+router.put("/:id", requireToken, async (req, res) => 
+{
+	try 
+	{
 		handleValidateOwnership(req, await db.Profile.findById(req.params.id))
 		const updatedProfile = await db.Profile.findByIdAndUpdate(
 			req.params.id,
@@ -70,22 +77,25 @@ router.put("/:id", requireToken, async (req, res) => {
 			{ new: true }
 		)
 		res.status(200).json(updatedProfile)
-	} catch (error) {
-		//send error
+	} catch (error) 
+	{
 		res.status(400).json({error: error.message})
 	}
 })
 
-// destroy route (DELETE HTTP VERB)
-router.delete("/:id", requireToken, async (req, res, next) => {
-  try {
+// Destroy route (DELETE HTTP VERB)
+// Send data to delete user profile
+router.delete("/:id", requireToken, async (req, res, next) => 
+{
+  try 
+	{
     handleValidateOwnership(req, await db.Profile.findById(req.params.id));
     const deletedProfile = await db.Profile.findByIdAndRemove(req.params.id);
     res.status(200).json(deletedProfile);
-  } catch (err) {
+  } catch (err) 
+	{
     res.status(400).json({ error: err.message });
   }
 });
-
 
 module.exports = router
