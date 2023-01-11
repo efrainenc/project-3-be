@@ -66,7 +66,7 @@ router.post("/", requireToken, async (req, res, next) =>
 
 // Update route (PUT HTTP VERB)
 // Send data to update user post
-router.put("/:id", async (req, res) => 
+router.put("/:id", requireToken, async (req, res) => 
 {
 	try 
 	{
