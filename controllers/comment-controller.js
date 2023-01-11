@@ -85,7 +85,7 @@ router.put("/:id", requireToken, async (req, res) =>
 
 // Destroy route (DELETE HTTP VERB)
 // Send data to delete comment
-router.delete("/:id", requireToken, async (req, res, next) => 
+router.delete("/:id", async (req, res, next) => 
 {
   try 
 	{
