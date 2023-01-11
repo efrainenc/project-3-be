@@ -66,7 +66,7 @@ router.post("/", requireToken, async (req, res, next) =>
 
 // Update route (PUT HTTP VERB)
 // Send data to update user post
-router.put("/:id", requireToken, async (req, res) => 
+router.put("/:id", async (req, res) => 
 {
 	try 
 	{
@@ -82,6 +82,7 @@ router.put("/:id", requireToken, async (req, res) =>
 		res.status(400).json({error: error.message})
 	}
 })
+
 
 // Destroy route (DELETE HTTP VERB)
 // Send data to delete user post
