@@ -83,6 +83,7 @@ router.put("/:id", async (req, res) => // TODO  requireToken,
 	}
 })
 
+
 // Destroy route (DELETE HTTP VERB)
 // Send data to delete user post
 router.delete("/:id", requireToken, async (req, res, next) => 
