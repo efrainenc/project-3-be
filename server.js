@@ -25,6 +25,7 @@ const followController = require('./controllers/follow-controller')
 
 // Create application object as express
 const app = express();
+const io = require('socket.io')();
 
 ///////////////////////////////
 // MIDDLEWARE
@@ -47,7 +48,11 @@ app.use('/follow', followController)
 // ROUTES
 ////////////////////////////////
 
-// Reroute to /aggregate/ from /
+io.on('connection', (socket) => {
+  console.log('A user connected');
+});
+
+// Reroute to /aggregate/ from
 app.get('/', (req, res)=>res.redirect('/aggregate'))
 
 // Error handling / 404

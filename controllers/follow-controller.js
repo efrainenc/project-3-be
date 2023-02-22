@@ -38,7 +38,7 @@ router.get('/:id', async (req, res, next) =>
   try 
   {
     const foundFollow = await db.Follow.findById(req.params.id)
-    .populate('post_id owner', '-_id')
+    .populate('owner', '-_id')
     .exec();
     res.status(200).json(foundFollow)
   } catch (error) 
