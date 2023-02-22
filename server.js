@@ -47,7 +47,7 @@ app.use('/follow', followController)
 // ROUTES
 ////////////////////////////////
 
-// Reroute to /aggregate/ from /
+// Reroute to /aggregate/ from
 app.get('/', (req, res)=>res.redirect('/aggregate'))
 
 // Error handling / 404

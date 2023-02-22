@@ -38,7 +38,7 @@ router.get('/:id', async (req, res, next) =>
 	try 
 	{
 		const foundPost = await db.Post.findById(req.params.id)
-		.populate('owner', 'username -_id')
+		.populate('owner')
 		.exec();
 		res.status(200).json(foundPost)
 	} catch (error) 
@@ -66,7 +66,7 @@ router.post("/", requireToken, async (req, res, next) =>
 
 // Update route (PUT HTTP VERB)
 // Send data to update user post
-router.put("/:id", requireToken, async (req, res) => 
+router.put("/:id", async (req, res) => // TODO  requireToken,
 {
 	try 
 	{
