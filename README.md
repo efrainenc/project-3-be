@@ -6,4 +6,4 @@ https://github.com/efrainenc/project-3-fe
 
 ## Link to deployed Database
 
-https://project-3-be.herokuapp.com/
+https://foto-book.herokuapp.com/
