@@ -25,7 +25,8 @@ const followController = require('./controllers/follow-controller')
 
 // Create application object as express
 const app = express();
-const io = require('socket.io')();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
 ///////////////////////////////
 // MIDDLEWARE
@@ -49,7 +50,21 @@ app.use('/follow', followController)
 ////////////////////////////////
 
 io.on('connection', (socket) => {
-  console.log('A user connected');
+  console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
+
+io.on('connection', (socket) => {
+  socket.on('message', (message) => {
+    console.log('received message:', message);
+    io.emit('message', message);
+  });
+});
+
+http.listen(3000, () => {
+  console.log('listening on *:3000');
 });
 
 // Reroute to /aggregate/ from
